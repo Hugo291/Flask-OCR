@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        {% include 'elements/head.html' %}
+        {% block head %}
+        {% endblock %}
+  </head>
+  <body>
+    {% include 'elements/header.html' %}
+
+    {% block body %}
+
+    {% endblock %}
+
+    {% include 'elements/footer.html' %}
+  </body>
+</html>
+

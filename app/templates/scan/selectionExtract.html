@@ -1,0 +1,65 @@
+{% extends 'elements/base.html' %}
+
+{% block head %}
+     <script src="{{ url_for('static', filename='js/canvas-selection.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/selection.js') }}"></script>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/loader.css') }}"/>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row mb-3">
+        <h3 class="mt-1">Extract</h3>
+    </div>
+    <div class="row mb-3">
+
+    {# col of all page's image scroll #}
+        <div class="col-md-3">
+
+            <ul class="list-group scroll-list-image " style="height: 770px;">
+
+                    {% for  page in pages %}
+
+                        <li class="page-element-selection list-group-item" data-folder="{{ folder_number }}" data-file="{{ page.num_page }}">
+                            <img width="100%" src="{{ url_for('scan_app.get_images' , folder_number=folder_number , file_number=page.num_page) }}">
+                        </li>
+
+                    {% endfor %}
+            </ul>
+
+        </div>
+
+        {# tabs text and image #}
+        <div class="col-md-9">
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Text</a>
+                    <a class="nav-item nav-link" id="nav-image-tab" data-toggle="tab" href="#nav-image" role="tab" aria-controls="nav-image" aria-selected="true">Image</a>
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-image" role="tabpanel" aria-labelledby="nav-image-tab">
+                    <canvas id="canvas-selection" class="m-2" style="border:1px solid gray;">
+                    Your browser does not support the canvas element.
+                    </canvas>
+                </div>
+                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                    <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
+
+                    </textarea>
+                </div>
+            </div>
+         </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+{% endblock %}

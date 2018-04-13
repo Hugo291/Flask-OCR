@@ -1,0 +1,86 @@
+{% extends 'elements/base.html' %}
+
+{% block head %}
+
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-fileselect.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/file-input.css') }}">
+
+{% endblock %}
+
+{% block body %}
+
+
+{% if filename %}
+    filename : {{filename}}
+{% endif %}
+{% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+{% endif %}
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="display-1">Scan</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 align-middle">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed dictum velit, finibus faucibus quam. Suspendisse potenti. Ut nibh lorem, sagittis nec condimentum et, mattis sit amet lorem. Duis et lorem ac lacus viverra fringilla.</p>
+            <p>Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer dictum a ex eget euismod. Nulla tristique, magna sodales hendrerit blandit, lacus felis mattis enim, a tempus diam dui non quam.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed dictum velit, finibus faucibus quam. Suspendisse potenti. Ut nibh lorem, sagittis nec condimentum et, mattis sit amet lorem. Duis et lorem ac lacus viverra fringilla.</p>
+        </div>
+        <div class="col-md-6">
+
+
+
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('scan_app.upload') }}">
+                <div class="form-group">
+                    <label>File</label>
+                    <input id="input-file" type="file" name="fileUpload[]" accept=".pdf" multiple>
+                </div>
+
+{#                <div class="form-group">#}
+{#                    <label>Name</label>#}
+{#                      <div class="row">#}
+{#                        <div class="col">#}
+{#                          <input value="test_1" name="filename" type="text" class="form-control" placeholder="file name">#}
+{#                        </div>#}
+{#                      </div>#}
+{#                </div>#}
+
+{#                <div class="form-group">#}
+{#                    <label>Range Page</label>#}
+{#                      <div class="row">#}
+{#                        <div class="col">#}
+{#                          <input type="text" class="form-control" placeholder="First Page">#}
+{#                        </div>#}
+{#                        <div class="col">#}
+{#                          <input type="text" class="form-control" placeholder="Last Page">#}
+{#                        </div>#}
+{#                      </div>#}
+{#                </div>#}
+
+                <button id="submit-uplaod" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+
+            <div class="mx-auto text-center mt-3">
+                <div class="progress">
+                  <div id="progressBar" class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+        </div>
+      </div>
+
+    </div>
+
+   <script>
+        $('#input-file').fileselect();
+    </script>
+{% endblock %}
