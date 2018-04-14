@@ -1,11 +1,15 @@
 click==6.7
-Flask==0.10.1
+Flask==0.12.2
 flask-sqlalchemy==2.3.2
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
+pdf2image==0.1.10
 Pillow==5.1.0
+PyMySQL==0.8.0
 pyocr==0.5.1
+PyPDF2==1.26.0
+pytesseract==0.2.0
 six==1.11.0
 sqlalchemy==1.2.6
 Werkzeug==0.13
