@@ -34,7 +34,7 @@ UPLOAD_DIR_PDF_PAGES = os.path.join(UPLOAD_DIR_PDF, 'pages')
 SECRET_KEY = 'secret_xxx'
 
 # SQLAlchemy settings
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://hugo:hugo@localhost/descartes_mexique?charset=utf8'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/descartes_mexique'
 SQLALCHEMY_TRACK_MODIFICATIONS = False  # Avoids a SQLAlchemy Warning
 
 

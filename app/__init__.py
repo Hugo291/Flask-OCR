@@ -5,7 +5,6 @@ from app.routes.scan import scan_app
 
 
 def create_app():
-
     # Instantiate Flask
     app_main = Flask(__name__)
 
@@ -31,6 +30,7 @@ db = SQLAlchemy(app)
 
 from app.models import DataBase
 
+
 # print("Drop tables")
 # db.drop_all()
 # print("Create tables")
@@ -40,6 +40,5 @@ from app.models import DataBase
 def index():
     return redirect(url_for('scan_app.files'))
 
-app.run()
 
-	
+app.run()
