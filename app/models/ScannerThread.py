@@ -67,9 +67,8 @@ class ScannerThread(Thread):
     Add a file in list to be scan
     """
 
-    def append_file(self, file, pdf_file_id):
-        tuple_file = (file, pdf_file_id)
-        self.__list_file.append(tuple_file)
+    def append_file(self, pdf_file_id):
+        self.__list_file.append(pdf_file_id)
 
     """
     convert file in jpg
@@ -98,17 +97,17 @@ class ScannerThread(Thread):
         from app.models.DataBase import OCRPage, db, OcrBoxWord
 
         # ckeck if the fodler exist
-        if os.path.isdir(os.path.join(UPLOAD_DIR_JPG, str(self.get_current_pdf_number()))):
+        if os.path.isdir(os.path.join(UPLOAD_DIR_JPG, str(self.get_last_file_scaned()))):
 
             # folder with all jpg
-            folder = os.path.join(UPLOAD_DIR_JPG, str(self.get_current_pdf_number()))
+            folder = os.path.join(UPLOAD_DIR_JPG, str(self.get_last_file_scaned()))
 
             # for all file
 
             for index in range(number_file):
 
                 image_ocr = OCRPage(
-                    pdf_file_id=self.get_current_pdf_id(),
+                    pdf_file_id=self.get_last_file_scaned(),
                     num_page=index
                 )
 
@@ -145,12 +144,6 @@ class ScannerThread(Thread):
     Convert the file and scan this 
     """
 
-    def get_current_pdf_id(self):
-        return self.get_last_file_scaned()[1]
-
-    def get_current_pdf_number(self):
-        return self.get_last_file_scaned()[0]
-
     # def convert_scan_file(self, folder_number, pdf_file_id):
     def convert_scan_file(self):
 
@@ -158,7 +151,7 @@ class ScannerThread(Thread):
 
         # pdf file bd
         pdf_file_db = PdfFile.query.filter_by(
-            id=self.get_current_pdf_id()
+            id=self.get_last_file_scaned()
         ).first()
 
         try:
@@ -167,7 +160,7 @@ class ScannerThread(Thread):
             db.session.commit()
 
             # convert to jpg
-            number_jpg = self.convert_pdf_to_jpg(self.get_current_pdf_number())
+            number_jpg = self.convert_pdf_to_jpg(self.get_last_file_scaned())
 
             # ocr the image
             self.ocr_jpg(number_jpg)

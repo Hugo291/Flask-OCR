@@ -6,7 +6,6 @@ from sqlalchemy import asc
 
 from app.config import UPLOAD_DIR_PDF, UPLOAD_DIR_JPG, UPLOAD_DIR_TXT
 from app.models.ScannerThread import ScannerThread
-from app.models.UploadFile import UploadFileSystem
 
 scan_app = Blueprint('scan_app', __name__, template_folder='../templates/scan', url_prefix='/scan')
 
@@ -23,53 +22,41 @@ threadScanner.start()
 def show():
     from app.models.Form import ScanDocumentForm
     form = ScanDocumentForm()
-    return render_template('upload.html',form=form)
+    return render_template('upload.html', form=form)
 
 
 """
     This page allow users to upload a file pdf for to be scan by ocr
 """
 
-# instance of upload system
-upload_sys = UploadFileSystem()
-
-
 @scan_app.route('/upload', methods=['POST'])
 def upload():
-    try:
-        # all file
-        uploaded_files = request.files.getlist("fileUpload[]")
+    from app.models.Form import ScanDocumentForm
 
-        for file in uploaded_files:
-            print('file upload : ' + str(file))
-            # check if file is upload with good extension
-            upload_sys.is_pdf(file)
+    form = ScanDocumentForm()
 
-            # the id where the file is upload
-            file_dest_name = upload_sys.save_file(file, UPLOAD_DIR_PDF)
+    if form.validate_on_submit():
 
-            print(file_dest_name)
+        # save in dbb
+        from app.models.DataBase import PdfFile, db
 
-            from app.models.DataBase import PdfFile, db
+        file = form.filePdf.data
 
-            # save in dbb
-            pdf = PdfFile(
-                name=file.filename,
-                path=file_dest_name
-            )
+        pdf = PdfFile(
+            name=file.filename,
+        )
 
-            db.session.add(pdf)
-            db.session.commit()
+        db.session.add(pdf)
+        db.session.commit()
 
-            print(file)
+        print(file)
+        file.save(os.path.join(UPLOAD_DIR_PDF , str(pdf.id)+'.pdf'))
 
-            threadScanner.append_file(file_dest_name, pdf.id)
+        threadScanner.append_file(pdf.id)
 
-        return jsonify(url=url_for('scan_app.files'))
-
-    except Exception as error:
-        print(error)
-        return jsonify(error=error.__str__())
+        return redirect(url_for( 'scan_app.files'))
+    else:
+        return str(form.errors)
 
 
 """
@@ -77,15 +64,14 @@ def upload():
 """
 
 
-@scan_app.route('/selectionExtract/<int:folder_number>', methods=['GET', 'POST'])
-def selection_extract(folder_number):
+@scan_app.route('/selectionExtract/<int:pdf_id>', methods=['GET', 'POST'])
+def selection_extract(pdf_id):
     # ckeck if the file exist
 
-    from app.models.DataBase import PdfFile, OCRPage
+    from app.models.DataBase import OCRPage
     try:
-        file = PdfFile.query.filter_by(path=folder_number).first()
-        pages = OCRPage.query.filter_by(pdf_file_id=file.id).all()
-        return render_template('selectionExtract.html', pages=pages, folder_number=folder_number)
+        pages = OCRPage.query.filter_by(pdf_file_id=pdf_id).all()
+        return render_template('selectionExtract.html', pages=pages, pdf_id=pdf_id)
     except:
         return 'Error selection_extract'
 
@@ -129,21 +115,20 @@ def files():
     return render_template('files.html', files=files)
 
 
-@scan_app.route('/images/<int:folder_number>/<int:file_number>')
-def get_images(folder_number, file_number):
-    folder = os.path.join(UPLOAD_DIR_JPG, str(folder_number))
-    filename = os.path.join(folder, str(file_number) + '.jpg')
+@scan_app.route('/images/<int:pdf_id>/<int:page_number>')
+def get_images(pdf_id, page_number):
+    folder = os.path.join(UPLOAD_DIR_JPG, str(pdf_id))
+    filename = os.path.join(folder, str(page_number) + '.jpg')
     return send_file(filename, mimetype='image/jpg')
 
 
-@scan_app.route('/page/<int:folder_number>/<int:file_number>')
-def get_boxs(folder_number, file_number):
-    from app.models.DataBase import OcrBoxWord, PdfFile, OCRPage
+@scan_app.route('/page/<int:pdf_id>/<int:page_number>')
+def get_boxs(pdf_id, page_number):
+    from app.models.DataBase import OcrBoxWord, OCRPage
 
     # get all box of page
-    file = PdfFile.query.filter_by(path=folder_number).first()
 
-    page = OCRPage.query.filter_by(pdf_file_id=file.id, num_page=file_number).first()
+    page = OCRPage.query.filter_by(pdf_file_id=pdf_id, num_page=page_number).first()
 
     boxs = OcrBoxWord.query.filter_by(pdf_page_id=page.id).all()
 
@@ -173,4 +158,4 @@ def delete_file(pdf_id):
 
 @scan_app.route('/correct')
 def correction():
-    return "text : "+request.data
+    return "text : " + request.data

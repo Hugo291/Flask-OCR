@@ -1,12 +1,12 @@
 {% extends 'elements/base.html' %}
 
 {% block head %}
-{#    <link rel='stylesheet' href="{{url_for('static', filename='css/font-awesome.css')}}" />#}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
 {% endblock %}
 
 {% block body %}
     <div class="container">
+        <a class="btn btn-primary" href="{{url_for('scan_app.upload')}}" >Uploaod</a>
 
         <div class="row">
 
@@ -23,7 +23,6 @@
                             <th scope="col">Downlaod</th>
                             <th scope="col">Delete</th>
 
-
                         </tr>
                     </thead>
 
@@ -36,7 +35,7 @@
                             <td class="col-md-1">{{ file.id }}</td>
                             <td class="col-md-6">{{ file.name }}</td>
                             <td class="col-md-2">{{ file.status | value_status_file }}</td>
-                            <td class="col-md-1"><a href="{{ url_for('scan_app.selection_extract', folder_number= file.path ) }}"><i class="ml-2 far fa-folder-open"></i></a></td>
+                            <td class="col-md-1"><a href="{{ url_for('scan_app.selection_extract', pdf_id= file.id ) }}"><i class="ml-2 far fa-folder-open"></i></a></td>
                             <td class="col-md-1"><a href="{{ url_for('scan_app.download', pdf_id= file.id ) }}"><i class="ml-4 fa fa-download"></i></a></td>
                             <td class="col-md-1"><a href="{{ url_for('scan_app.delete_file', pdf_id= file.id ) }}"><i class="ml-3 far fa-times-circle"></i></a></td>
 

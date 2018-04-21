@@ -2,7 +2,7 @@
 
 {% block head %}
 
-    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{#    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>#}
     <script src="{{ url_for('static', filename='js/bootstrap-fileselect.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/file-input.css') }}">
 
@@ -10,10 +10,6 @@
 
 {% block body %}
 
-
-{% if filename %}
-    filename : {{filename}}
-{% endif %}
 {% if error %}
     <div class="alert alert-danger" role="alert">
         {{error}}
@@ -37,33 +33,24 @@
         <div class="col-md-6">
 
 
-
             <form method="POST" enctype="multipart/form-data" action="{{ url_for('scan_app.upload') }}">
                 <div class="form-group">
-                    <label>File</label>
-                    <input id="input-file" type="file" name="fileUpload[]" accept=".pdf" multiple>
+{#                    <label>File</label>#}
+{#                    <input id="input-file" type="file" name="fileUpload[]" accept=".pdf" multiple>#}
+                    {{ form.filePdf.label }}{{ form.filePdf(id='input-file',accept='.pdf') }}
                 </div>
+                <div class="form-group">
 
-{#                <div class="form-group">#}
-{#                    <label>Name</label>#}
-{#                      <div class="row">#}
-{#                        <div class="col">#}
-{#                          <input value="test_1" name="filename" type="text" class="form-control" placeholder="file name">#}
-{#                        </div>#}
-{#                      </div>#}
-{#                </div>#}
-
-{#                <div class="form-group">#}
-{#                    <label>Range Page</label>#}
-{#                      <div class="row">#}
-{#                        <div class="col">#}
-{#                          <input type="text" class="form-control" placeholder="First Page">#}
-{#                        </div>#}
-{#                        <div class="col">#}
-{#                          <input type="text" class="form-control" placeholder="Last Page">#}
-{#                        </div>#}
-{#                      </div>#}
-{#                </div>#}
+                    <label>Range Page</label>
+                      <div class="row">
+                        <div class="col">
+                            {{ form.file_range_min.label }}{{ form.file_range_min(class_='form-control',value="0") }}
+                            </div>
+                          <div class="col">
+                          {{ form.file_range_max.label }}{{ form.file_range_max(class_='form-control',value="0") }}
+                        </div>
+                      </div>
+                </div>
 
                 <button id="submit-uplaod" type="submit" class="btn btn-primary">Submit</button>
             </form>

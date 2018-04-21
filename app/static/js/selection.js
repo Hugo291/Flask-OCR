@@ -5,7 +5,7 @@ $(function () {
     $('.page-element-selection').click(function() {
 
         //folder and file is the page
-        var folder = $(this).data('folder');
+        var folder = $(this).data('pdf_id');
         var file = $(this).data('file');
 
         //the image

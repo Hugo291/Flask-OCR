@@ -52,3 +52,5 @@ class DevConfig(Config):
 
 class TestConfig(Config):
     pass
+
+WTF_CSRF_ENABLED = False

@@ -24,7 +24,6 @@ class PdfFile(db.Model):
     __tablename__ = 'pdf_file'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    path = db.Column(db.String(100), unique=True, nullable=False)
     status = db.Column(db.Integer, default=0)
     range_min = db.Column(db.Integer)
     range_max = db.Column(db.Integer)
