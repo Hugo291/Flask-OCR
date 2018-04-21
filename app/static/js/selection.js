@@ -4,9 +4,9 @@ $(function () {
 
     $('.page-element-selection').click(function() {
 
-        //folder and file is the page
-        var folder = $(this).data('pdf_id');
-        var file = $(this).data('file');
+        //pdf_id and file is the page
+        var pdf_id = $(this).data('pdf_id');
+        var page_number = $(this).data('page_number');
 
         //the image
         var src = $(this).find("img").attr('src');
@@ -35,7 +35,7 @@ $(function () {
         };
 
         //get info of scan page box(word) and text
-        $.ajax({url: "/scan/page/"+folder+"/"+file, success: function(results){
+        $.ajax({url: "/scan/page/"+pdf_id+"/"+page_number, success: function(results){
 
             //boxs word
             var boxs = results.box;

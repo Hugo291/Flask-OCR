@@ -21,7 +21,7 @@
 
                     {% for  page in pages %}
 
-                        <li class="page-element-selection list-group-item" data-pdf_id="{{ pdf_id }}" data-file="{{ page.num_page }}">
+                        <li class="page-element-selection list-group-item" data-pdf_id="{{ pdf_id }}" data-page_number="{{ page.num_page }}">
                             <img width="100%" src="{{ url_for('scan_app.get_images' , pdf_id=pdf_id , page_number=page.num_page) }}">
                         </li>
 
@@ -61,9 +61,5 @@
       </div>
 
     </div>
-
-
-
-
 
 {% endblock %}
