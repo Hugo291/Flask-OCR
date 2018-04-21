@@ -2,14 +2,14 @@ import datetime
 import os
 import random
 
-
-
 """
       Create the file with time and random value
   """
 
+
 def create_file_name():
     return str(datetime.datetime.today().strftime('%Y%m%d')) + str(random.randint(0, 1000))
+
 
 FILE_UPLOAD_NAME = 'fileUpload[]'
 
@@ -20,6 +20,8 @@ FILE_UPLOAD_NAME = 'fileUpload[]'
 """
     Check if file exist
 """
+
+
 def file_exist(files):
     if FILE_UPLOAD_NAME not in files or files[FILE_UPLOAD_NAME] == '':
         raise Exception('Please select a file')
@@ -28,16 +30,17 @@ def file_exist(files):
 
 
 class UploadFileSystem():
-
     """
     Constructor
     """
+
     def __init__(self):
         pass
 
     """
     Check if the file is a pdf
     """
+
     def is_pdf(self, file):
 
         if str(file.mimetype).lower() == "application/pdf".lower():
@@ -46,11 +49,10 @@ class UploadFileSystem():
             """this extension is not supported"""
             raise Exception('This extension  (' + file.mimetype + ') is not supported')
 
-
-
     """
     Save the file with dest
     """
+
     def save_file(self, file, dest):
 
         numRandom = create_file_name()
@@ -69,4 +71,3 @@ class UploadFileSystem():
         except Exception as E:
 
             raise Exception('Writing error' + str(E) + new_file_pdf_path)
-

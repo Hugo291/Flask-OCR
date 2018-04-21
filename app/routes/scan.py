@@ -21,7 +21,9 @@ threadScanner.start()
 @scan_app.route('/', methods=['GET'])
 @scan_app.route('/upload', methods=['GET'])
 def show():
-    return render_template('upload.html')
+    from app.models.Form import ScanDocumentForm
+    form = ScanDocumentForm()
+    return render_template('upload.html',form=form)
 
 
 """
@@ -161,3 +163,14 @@ def delete_file(pdf_id):
         return redirect(url_for('scan_app.files'))
     except Exception as error:
         return jsonify({'error': 'During delete ( ' + str(error) + ' )'})
+
+
+"""
+    correction file
+    GET [text]
+"""
+
+
+@scan_app.route('/correct')
+def correction():
+    return "text : "+request.data

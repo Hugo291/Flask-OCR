@@ -156,23 +156,23 @@ class ScannerThread(Thread):
 
         from app.models.DataBase import PdfFile, db
 
-        #pdf file bd
+        # pdf file bd
         pdf_file_db = PdfFile.query.filter_by(
             id=self.get_current_pdf_id()
         ).first()
 
         try:
-            #set status In progress
+            # set status In progress
             pdf_file_db.status = 1
             db.session.commit()
 
-            #convert to jpg
+            # convert to jpg
             number_jpg = self.convert_pdf_to_jpg(self.get_current_pdf_number())
 
-            #ocr the image
+            # ocr the image
             self.ocr_jpg(number_jpg)
 
-            #set staus finish
+            # set staus finish
             pdf_file_db.status = 2
             db.session.commit()
 
