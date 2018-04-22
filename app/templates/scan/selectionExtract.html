@@ -20,24 +20,25 @@
 
             <ul class="list-group scroll-list-image " style="height: 770px;">
 
-                    {% for  page in pages %}
+                {% for  page in pages %}
 
+                    {% if loop.index == 0 %}
+                        {% set first_page_num = page.num_page %}
+                    {% endif %}
 
-                                    <li class="page-element-selection list-group-item" data-pdf_id="{{ pdf_id }}" data-page_number="{{ page.num_page }}">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                {% set num = page.num_page|int + 1 %}
-                                                {{ num }}
-                                            </div>
-                                            <div class="card-body">
-                                                <img width="100%" src="{{ url_for('scan_app.get_images' , pdf_id=pdf_id , page_number=page.num_page) }}">
-                                            </div>
-                                        </div>
-                                    </li>
+                    <li class="page-element-selection list-group-item" data-pdf_id="{{ pdf_id }}" data-page_number="{{ page.num_page }}">
+                        <div class="card">
+                            <div class="card-header">
+                                {% set num = page.num_page|int + 1 %}
+                                {{ num }}
+                            </div>
+                            <div class="card-body">
+                                <img width="100%" src="{{ url_for('scan_app.get_images' , pdf_id=pdf_id , page_number=page.num_page) }}">
+                            </div>
+                        </div>
+                    </li>
 
-
-
-                    {% endfor %}
+                {% endfor %}
             </ul>
 
         </div>
@@ -45,7 +46,7 @@
         {# tabs text and image #}
         <div class="col-md-9">
 
-            <div id="load-process">test</div>
+            <div id="load-process"></div>
 
             {# list tab#}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -61,7 +62,7 @@
             <div class="tab-content" id="myTabContent">
 
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <canvas id="canvas-selection" class="m-2" style="border:1px solid gray;">
+                    <canvas id="canvas-selection" class="m-2" style="border:1px solid gray;" value="">
                     Your browser does not support the canvas element.
                     </canvas>
                 </div>
