@@ -14,16 +14,27 @@
     </div>
     <div class="row mb-3">
 
-    {# col of all page's image scroll #}
+        {# col of all page's image scroll #}
         <div class="col-md-3">
 
             <ul class="list-group scroll-list-image " style="height: 770px;">
 
                     {% for  page in pages %}
 
-                        <li class="page-element-selection list-group-item" data-pdf_id="{{ pdf_id }}" data-page_number="{{ page.num_page }}">
-                            <img width="100%" src="{{ url_for('scan_app.get_images' , pdf_id=pdf_id , page_number=page.num_page) }}">
-                        </li>
+
+                                    <li class="page-element-selection list-group-item" data-pdf_id="{{ pdf_id }}" data-page_number="{{ page.num_page }}">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                {% set num = page.num_page|int + 1 %}
+                                                {{ num }}
+                                            </div>
+                                            <div class="card-body">
+                                                <img width="100%" src="{{ url_for('scan_app.get_images' , pdf_id=pdf_id , page_number=page.num_page) }}">
+                                            </div>
+                                        </div>
+                                    </li>
+
+
 
                     {% endfor %}
             </ul>
@@ -33,29 +44,30 @@
         {# tabs text and image #}
         <div class="col-md-9">
 
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Text</a>
-                    <a class="nav-item nav-link" id="nav-image-tab" data-toggle="tab" href="#nav-image" role="tab" aria-controls="nav-image" aria-selected="true">Image</a>
-                </div>
-            </nav>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Image</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Text</a>
+              </li>
 
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-image" role="tabpanel" aria-labelledby="nav-image-tab">
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <canvas id="canvas-selection" class="m-2" style="border:1px solid gray;">
                     Your browser does not support the canvas element.
                     </canvas>
+              </div>
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                   <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
 
-                </div>
-                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
-{#                    <form>#}
-                        <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
-
-                        </textarea>
-                        <input class="btn btn-primary btn-correction" type="submit" value="Corriger">
-{#                    </form>#}
-                </div>
+                    </textarea>
+                    <input class="btn btn-primary btn-correction" type="submit" value="Edit">
+              </div>
             </div>
+
          </div>
 
       </div>

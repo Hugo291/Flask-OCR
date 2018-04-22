@@ -4,9 +4,16 @@ $(function () {
 
     $('.page-element-selection').click(function() {
 
+        $('.page-element-selection').removeClass("select");
+        $(this).addClass('select');
+
+        console.log("select");
+
         //pdf_id and file is the page
         var pdf_id = $(this).data('pdf_id');
         var page_number = $(this).data('page_number');
+
+        console.log('pdf-id : '+pdf_id+" page_number : "+page_number);
 
         //the image
         var src = $(this).find("img").attr('src');
@@ -57,7 +64,6 @@ $(function () {
 
             //text page
             var text = results.text;
-            console.log('text',text);
 
             $('#textarea-text-page').val(text);
 

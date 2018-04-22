@@ -70,8 +70,9 @@ def selection_extract(pdf_id):
     try:
         pages = OCRPage.query.filter_by(pdf_file_id=pdf_id).all()
         return render_template('selectionExtract.html', pages=pages, pdf_id=pdf_id)
-    except:
-        return 'Error selection_extract'
+    except Exception as E:
+       return str(E)
+
 
 
 """
