@@ -9,12 +9,12 @@ from app.models.ScannerThread import ScannerThread
 
 scan_app = Blueprint('scan_app', __name__, template_folder='../templates/scan', url_prefix='/scan')
 
-threadScanner = ScannerThread()
-threadScanner.start()
+threadScan = ScannerThread()
+threadScan.start()
 
-"""
-    This is a simple redirect
-"""
+
+def add_file(file):
+    threadScan.append_file(file)
 
 
 @scan_app.route('/', methods=['GET'])
@@ -26,8 +26,9 @@ def show():
 
 
 """
-    This page allow users to upload a file pdf for to be scan by ocr
+    This page allow users to upload a pdf file for to be scan by ocr
 """
+
 
 @scan_app.route('/upload', methods=['POST'])
 def upload():
@@ -42,19 +43,16 @@ def upload():
 
         file = form.filePdf.data
 
-        pdf = PdfFile(
-            name=file.filename,
-        )
+        pdf = PdfFile(name=file.filename)
 
         db.session.add(pdf)
         db.session.commit()
 
-        print(file)
-        file.save(os.path.join(UPLOAD_DIR_PDF , str(pdf.id)+'.pdf'))
+        file.save(os.path.join(UPLOAD_DIR_PDF, str(pdf.id) + '.pdf'))
 
-        threadScanner.append_file(pdf.id)
+        add_file(pdf.id)
 
-        return redirect(url_for( 'scan_app.files'))
+        return redirect(url_for('scan_app.files'))
     else:
         return str(form.errors)
 

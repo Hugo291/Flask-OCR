@@ -1,26 +1,24 @@
 import os
 
-import pdf2image as pdf2image
+from pdf2image import pdf2image
+from PyPDF2 import PdfFileReader
 
 
-def convert_to_jpg(input_pdf_file, target_dir, fname_fmt="{num_page}.jpg"):
+def page_number(input_pdf_file):
+    return PdfFileReader(open(input_pdf_file, 'rb')).getNumPages()
 
-    filename_output = os.path.splitext(input_pdf_file)[0]
 
+def convert_to_jpg(input_pdf_file, target_dir, num_page=0, fname_fmt="{num_page}.jpg"):
     if not os.path.exists(target_dir):
-        # creation du rep
+        # create folder if not exist
         os.makedirs(target_dir)
-    else:
-        if os.path.exists(os.path.join(target_dir, filename_output)):
-            raise Exception('Error the file exist already')
 
-    images = pdf2image.convert_from_path(input_pdf_file)
-    for index, image in enumerate(images):
-        path_file = os.path.join(target_dir , fname_fmt.format(num_page=index))
-        image.save(path_file)
+    images = pdf2image.convert_from_path(input_pdf_file, first_page=num_page+1, last_page=num_page + 2)
+    print("Images : " + str(images))
 
-    return len(images)
+    path_file = os.path.join(target_dir, fname_fmt.format(num_page=num_page))
+    print('save : ' + path_file)
+    images[0].save(path_file)
 
 
-if __name__ == '__main__':
-    print(convert_to_jpg('4.pdf', '', ))
+
