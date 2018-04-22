@@ -1,7 +1,6 @@
 {% extends 'elements/base.html' %}
 
 {% block head %}
-     <script src="{{ url_for('static', filename='js/canvas-selection.js') }}"></script>
      <script src="{{ url_for('static', filename='js/selection.js') }}"></script>
      <link rel="stylesheet" href="{{ url_for('static', filename='css/loader.css') }}"/>
 {% endblock %}
@@ -9,9 +8,11 @@
 {% block body %}
 
 <div class="container">
+
     <div class="row mb-3">
         <h3 class="mt-1">Extract</h3>
     </div>
+
     <div class="row mb-3">
 
         {# col of all page's image scroll #}
@@ -44,6 +45,9 @@
         {# tabs text and image #}
         <div class="col-md-9">
 
+            <div id="load-process">test</div>
+
+            {# list tab#}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Image</a>
@@ -51,21 +55,23 @@
               <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Text</a>
               </li>
-
             </ul>
 
+            {# tab content #}
             <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <canvas id="canvas-selection" class="m-2" style="border:1px solid gray;">
                     Your browser does not support the canvas element.
                     </canvas>
-              </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                   <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
+                </div>
 
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
                     </textarea>
                     <input class="btn btn-primary btn-correction" type="submit" value="Edit">
-              </div>
+                </div>
+
             </div>
 
          </div>

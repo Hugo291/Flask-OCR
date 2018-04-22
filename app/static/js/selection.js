@@ -4,6 +4,8 @@ $(function () {
 
     $('.page-element-selection').click(function() {
 
+
+
         $('.page-element-selection').removeClass("select");
         $(this).addClass('select');
 
@@ -12,6 +14,8 @@ $(function () {
         //pdf_id and file is the page
         var pdf_id = $(this).data('pdf_id');
         var page_number = $(this).data('page_number');
+
+        startLoad("waiting for the page "+(page_number+1));
 
         console.log('pdf-id : '+pdf_id+" page_number : "+page_number);
 
@@ -46,20 +50,14 @@ $(function () {
 
             //boxs word
             var boxs = results.box;
-
             last_boxs = boxs;
-
             //create all box
             for(let index in boxs){
-
                 var box = boxs[index];
-
                 ctx.rect(box.position_left,box.position_top,box.size_width,box.size_height);
                 ctx.stroke();
                 ctx.lineWidth=1;
                 ctx.strokeStyle="#FF0000";
-
-
             }
 
             //text page
@@ -67,6 +65,7 @@ $(function () {
 
             $('#textarea-text-page').val(text);
 
+            endLoad('The page is loaded');
         }});
 
     });
@@ -89,3 +88,24 @@ $(function () {
             }});
     });
 });
+
+//loader
+
+function startLoad(text) {
+    $('#load-process').html(
+        "<div class='row'>" +
+            "<div class='loader mr-3 ml-3'></div>" +
+            "<div>"+text+"</div>" +
+        "</div>"
+    );
+}
+
+
+function endLoad(text) {
+    $('#load-process').html("" +
+        "<div class='row '>" +
+            "<div class='ml-3'>" +
+                text+"" +
+            "</div>" +
+        "</div>")
+}

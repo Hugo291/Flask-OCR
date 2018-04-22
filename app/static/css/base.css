@@ -24,3 +24,7 @@
 .select{
   background-color: #bc313c !important;
 }
+
+#load-process{
+    height: 30px;
+}

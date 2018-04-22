@@ -12,16 +12,13 @@ $(document).ready(function() {
 
 			xhr : function() {
 
-				var xhr = new window.XMLHttpRequest();
+                let xhr = new window.XMLHttpRequest();
 
                 xhr.upload.addEventListener('progress', function(e) {
 
 					if (e.lengthComputable) {
-
-                        var percent = Math.round((e.loaded / e.total) * 100);
-
+                        let percent = Math.round((e.loaded / e.total) * 100);
                         $('#progressBar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-
 					}
 
 				});

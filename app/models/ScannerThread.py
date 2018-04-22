@@ -119,6 +119,8 @@ class ScannerThread(Thread):
 
                 path_file_img = os.path.join(folder, '{}.jpg'.format(str(index)))
 
+                print("Scan file : "+str(index))
+
                 scanner_ocr = OCR(path_file_img)
                 image_ocr.text = scanner_ocr.scan_text()
 

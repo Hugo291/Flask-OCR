@@ -35,8 +35,6 @@
 
             <form method="POST" enctype="multipart/form-data" action="{{ url_for('scan_app.upload') }}">
                 <div class="form-group">
-{#                    <label>File</label>#}
-{#                    <input id="input-file" type="file" name="fileUpload[]" accept=".pdf" multiple>#}
                     {{ form.filePdf.label }}{{ form.filePdf(id='input-file',accept='.pdf') }}
                 </div>
                 <div class="form-group">

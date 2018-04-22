@@ -14,7 +14,6 @@ def convert_to_jpg(input_pdf_file, target_dir, num_page=0, fname_fmt="{num_page}
         os.makedirs(target_dir)
 
     images = pdf2image.convert_from_path(input_pdf_file, first_page=num_page+1, last_page=num_page + 2)
-    print("Images : " + str(images))
 
     path_file = os.path.join(target_dir, fname_fmt.format(num_page=num_page))
     print('save : ' + path_file)
