@@ -20,18 +20,22 @@ def add_file(file):
 @scan_app.route('/', methods=['GET'])
 @scan_app.route('/upload', methods=['GET'])
 def show():
+    """
+    Page for uplaod file
+    :return: upload.html
+    """
     from app.models.Form import ScanDocumentForm
     form = ScanDocumentForm()
     return render_template('upload.html', form=form)
 
 
-"""
-    This page allow users to upload a pdf file for to be scan by ocr
-"""
-
-
 @scan_app.route('/upload', methods=['POST'])
 def upload():
+    """
+    This page allow users to upload a pdf file for to be scan by ocr
+
+    :return: files.html
+    """
     from app.models.Form import ScanDocumentForm
 
     form = ScanDocumentForm()
@@ -74,13 +78,14 @@ def selection_extract(pdf_id):
         return str(E)
 
 
-"""
-    This page is for downlaod the document after correction
-"""
-
-
 @scan_app.route('/downlaod/<int:pdf_id>')
 def download(pdf_id):
+    """
+    This page is for downlaod the document after correction
+
+    :param pdf_id:
+    :return: file of all text of pdf separate by -- num page --
+    """
     from app.models.DataBase import OCRPage, PdfFile
 
     pdf_file = PdfFile.query.filter_by(id=pdf_id).first()
@@ -93,20 +98,22 @@ def download(pdf_id):
 
     for page in pages:
         f.write(
-            ("-" * 50 + "\n \t\t\t Num : " + page.num_page + "\n" + "-" * 50 + "\n").encode(sys.stdout.encoding,errors='Error'))
-        f.write((str(page.text if page.text_corrector is None else page.text_corrector) + '\n').encode(sys.stdout.encoding, errors='Error'))
+            ("-" * 50 + "\n \t\t\t Num : " + page.num_page + "\n" + "-" * 50 + "\n").encode(sys.stdout.encoding,
+                                                                                            errors='Error'))
+        f.write(
+            (str(page.text if page.text_corrector is None else page.text_corrector) + '\n').encode(sys.stdout.encoding,
+                                                                                                   errors='Error'))
 
     f.close()
     return send_file(file_path)
 
 
-"""
-    This page list all file in bdd
-"""
-
-
 @scan_app.route('/files', methods=['GET'])
 def files():
+    """
+    This page list all file in bdd
+    :return: files.html
+    """
     from app.models.DataBase import PdfFile
     files = PdfFile.query.order_by(asc(PdfFile.status)).order_by(asc(PdfFile.name)).all()
     return render_template('files.html', files=files)
@@ -114,6 +121,12 @@ def files():
 
 @scan_app.route('/images/<int:pdf_id>/<int:page_number>')
 def get_images(pdf_id, page_number):
+    """
+
+    :param pdf_id: the id of pdf
+    :param page_number: page number
+    :return: the image of page of pdf
+    """
     folder = os.path.join(UPLOAD_DIR_JPG, str(pdf_id))
     filename = os.path.join(folder, str(page_number) + '.jpg')
     return send_file(filename, mimetype='image/jpg')
@@ -121,6 +134,12 @@ def get_images(pdf_id, page_number):
 
 @scan_app.route('/page/<int:pdf_id>/<int:page_number>')
 def get_boxs(pdf_id, page_number):
+    """
+    list of box and text of page of pdf
+    :param pdf_id:
+    :param page_number:
+    :return: json list box of all word in page and text of page
+    """
     from app.models.DataBase import OcrBoxWord, OCRPage
 
     # get all box of page
@@ -137,24 +156,27 @@ def get_boxs(pdf_id, page_number):
 
 @scan_app.route('/delete/<int:pdf_id>')
 def delete_file(pdf_id):
+    """
+    Delete the file on dbb
+    :param pdf_id:
+    :return: files.html
+    """
     try:
         from app.models.DataBase import PdfFile, db
         PdfFile.query.filter_by(id=pdf_id).delete()
-        # return jsonify({'succes': 'The file is deleted'})
-        # print(url_for('scan_app.files'))
         return redirect(url_for('scan_app.files'))
     except Exception as error:
         return jsonify({'error': 'During delete ( ' + str(error) + ' )'})
 
 
-"""
-    correction file
-    GET [text]
-"""
-
-
 @scan_app.route('/correct/<int:pdf_id>/<int:num_page>', methods=['POST', 'GET'])
 def correction(pdf_id, num_page):
+    """
+    Correct the text of page
+    :param pdf_id: the id of pdf
+    :param num_page: the page of pdf
+    :return: success or error
+    """
     from app.models.DataBase import OCRPage, db
     ocr_page = OCRPage.query.filter_by(pdf_file_id=pdf_id, num_page=num_page).first()
     ocr_page.text_corrector = request.form['text']
