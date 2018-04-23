@@ -1,7 +1,9 @@
 {% extends 'elements/base.html' %}
 
 {% block head %}
+
      <script src="{{ url_for('static', filename='js/selection.js') }}"></script>
+     <script src="{{ url_for('static', filename='js/correction.js') }}"></script>
      <link rel="stylesheet" href="{{ url_for('static', filename='css/loader.css') }}"/>
 {% endblock %}
 
@@ -51,26 +53,28 @@
             {# list tab#}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Image</a>
+                <a class="nav-link active" id="canvas-tab" data-toggle="tab" href="#canvas" role="tab" aria-controls="canvas" aria-selected="true">Image</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Text</a>
+                <a class="nav-link" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="false">Text</a>
               </li>
             </ul>
 
             {# tab content #}
             <div class="tab-content" id="myTabContent">
 
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show active" id="canvas" role="tabpanel" aria-labelledby="canvas-tab">
                     <canvas id="canvas-selection" class="m-2" style="border:1px solid gray;" value="">
                     Your browser does not support the canvas element.
                     </canvas>
                 </div>
 
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
-                    </textarea>
-                    <input class="btn btn-primary btn-correction" type="submit" value="Edit">
+                <div class="tab-pane fade" id="text" role="tabpanel" aria-labelledby="text-tab">
+                    <form method="post">
+                        <textarea id="textarea-text-page" class="m-2" style="width:100%; height:500px;">
+                        </textarea>
+                        <input class="btn btn-primary btn-correction" type="submit" value="Edit">
+                    </form>
                 </div>
 
             </div>

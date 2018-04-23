@@ -71,8 +71,7 @@ def selection_extract(pdf_id):
         pages = OCRPage.query.filter_by(pdf_file_id=pdf_id).all()
         return render_template('selectionExtract.html', pages=pages, pdf_id=pdf_id)
     except Exception as E:
-       return str(E)
-
+        return str(E)
 
 
 """
@@ -93,10 +92,9 @@ def download(pdf_id):
     f = open(file_path, "wb")
 
     for page in pages:
-        f.write(("---------------------------------------------------------" +
-                 "\n \t\t\tNum : " + page.num_page + "\n" + "---------------------------------------------------------" +
-                 "\n").encode(sys.stdout.encoding, errors='Error'))
-        f.write((str(page.text) + '\n').encode(sys.stdout.encoding, errors='Error'))
+        f.write(
+            ("-" * 50 + "\n \t\t\t Num : " + page.num_page + "\n" + "-" * 50 + "\n").encode(sys.stdout.encoding,errors='Error'))
+        f.write((str(page.text if page.text_corrector is None else page.text_corrector) + '\n').encode(sys.stdout.encoding, errors='Error'))
 
     f.close()
     return send_file(file_path)
@@ -132,7 +130,7 @@ def get_boxs(pdf_id, page_number):
     boxs = OcrBoxWord.query.filter_by(pdf_page_id=page.id).all()
 
     json_array = {'box': [e.serialize() for e in boxs],
-                  'text': page.text}
+                  'text': page.text if page.text_corrector is None else page.text_corrector}
 
     return jsonify(json_array)
 
@@ -155,6 +153,10 @@ def delete_file(pdf_id):
 """
 
 
-@scan_app.route('/correct')
-def correction():
-    return "text : " + request.data
+@scan_app.route('/correct/<int:pdf_id>/<int:num_page>', methods=['POST', 'GET'])
+def correction(pdf_id, num_page):
+    from app.models.DataBase import OCRPage, db
+    ocr_page = OCRPage.query.filter_by(pdf_file_id=pdf_id, num_page=num_page).first()
+    ocr_page.text_corrector = request.form['text']
+    db.session.commit()
+    return 'success'

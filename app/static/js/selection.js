@@ -8,22 +8,6 @@ $(function () {
 
 });
 
-$(function () {
-    $('.btn-correction').click(function () {
-        var url = "/correct";
-        $.ajax({
-            url: url,
-            type:"POST",
-            data:"hugo=hugo",
-             dataType : "html",
-            success: function(results){
-                alert(results);
-            }});
-    });
-});
-
-//loader
-
 function startLoad(text) {
     $('#load-process').html(
         "<div class='row'>" +
@@ -34,8 +18,8 @@ function startLoad(text) {
 }
 
 function setBackgroundSelect(CurrentSelect) {
-    $('.page-element-selection').removeClass("bg-secondary");
-    $(CurrentSelect).addClass('bg-secondary');
+    $('.page-element-selection').removeClass("select");
+    $(CurrentSelect).addClass('select');
 }
 
 function endLoad(text) {
