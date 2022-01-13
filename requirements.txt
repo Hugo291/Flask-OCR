@@ -5,7 +5,7 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 pdf2image==1.5.4
-Pillow==6.2.0
+Pillow==9.0.0
 PyMySQL==0.9.3
 pyocr==0.6
 PyPDF2==1.26.0
